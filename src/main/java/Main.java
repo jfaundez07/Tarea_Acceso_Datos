@@ -7,7 +7,7 @@ public class Main {
         String tabla = menu.seleccionarTabla();
         dbQuerys.SELECT(tabla);
 
-        String[] redbull = {"2", "Red Bull Racing", "Austria", "Christian Horner", "4", "RB16"};
-        dbQuerys.INSERT("ESCUDERIA", redbull);
+        //String[] redbull = {"Red Bull Racing", "Austria", "Christian Horner", "4", "RB16"};
+        //dbQuerys.INSERT("ESCUDERIA", redbull);
     }
 }

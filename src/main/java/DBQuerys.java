@@ -120,25 +120,23 @@ public class DBQuerys {
                     break;
 
                 case "ESCUDERIA":
-                    sql = "INSERT INTO ESCUDERIA (idEscuderia, nombre, pais, director, campeonatos, monoplaza) VALUES (?, ?, ?, ?, ?, ?)";
+                    sql = "INSERT INTO ESCUDERIA (nombre, pais, director, campeonatos, monoplaza) VALUES (?, ?, ?, ?, ?)";
                     preparedStatement = this.connection.prepareStatement(sql);
-                    preparedStatement.setInt(1, Integer.parseInt(valores[0]));
+                    preparedStatement.setString(1, valores[0]);
                     preparedStatement.setString(2, valores[1]);
                     preparedStatement.setString(3, valores[2]);
-                    preparedStatement.setString(4, valores[3]);
-                    preparedStatement.setInt(5, Integer.parseInt(valores[4]));
-                    preparedStatement.setString(6, valores[5]);
+                    preparedStatement.setInt(4, Integer.parseInt(valores[3]));
+                    preparedStatement.setString(5, valores[4]);
                     break;
 
                 case "CIRCUITO":
-                    sql = "INSERT INTO CIRCUITO (idCircuito, nombre, pais, ciudad, longitud, vueltas) VALUES (?, ?, ?, ?, ?, ?)";
+                    sql = "INSERT INTO CIRCUITO (nombre, pais, ciudad, longitud, vueltas) VALUES (?, ?, ?, ?, ?)";
                     preparedStatement = this.connection.prepareStatement(sql);
-                    preparedStatement.setInt(1, Integer.parseInt(valores[0]));
+                    preparedStatement.setString(1, valores[0]);
                     preparedStatement.setString(2, valores[1]);
                     preparedStatement.setString(3, valores[2]);
-                    preparedStatement.setString(4, valores[3]);
-                    preparedStatement.setFloat(5, Float.parseFloat(valores[4]));
-                    preparedStatement.setInt(6, Integer.parseInt(valores[5]));
+                    preparedStatement.setFloat(4, Float.parseFloat(valores[3]));
+                    preparedStatement.setInt(5, Integer.parseInt(valores[4]));
                     break;
 
                 default:
