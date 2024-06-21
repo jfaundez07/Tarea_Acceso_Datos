@@ -3,11 +3,11 @@ public class Main {
         DBQuerys dbQuerys = new DBQuerys();
 
         Menu menu = new Menu();
-        menu.lanzarMenu();
+        //* menu.lanzarMenu();
         String tabla = menu.seleccionarTabla();
-
         dbQuerys.SELECT(tabla);
 
-
+        String[] redbull = {"2", "Red Bull Racing", "Austria", "Christian Horner", "4", "RB16"};
+        dbQuerys.INSERT("ESCUDERIA", redbull);
     }
 }
