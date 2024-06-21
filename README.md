@@ -13,6 +13,6 @@ Actualmente el programa es capaz de:
 | ESCUDERIA | Campeonatos, Monoplaza  | 
 
 ## Falta:
-1.- Implementar la eliminacion de un registro
+1.- Implementar la eliminacion de un registro  
 2.- Implementar control de concurrencia  
 3.- Implementar manejo de transacciones
