@@ -8,6 +8,7 @@ public class DBQuerys {
 
         try {
             this.connection =  DB.connect();
+            System.out.println(connection);
             System.out.println("Connected to the PostgreSQL database.");
 
         } catch (SQLException e) {
@@ -20,7 +21,6 @@ public class DBQuerys {
         try {
 
             String sql = "SELECT * FROM " + tabla + ";";
-            System.out.println(sql);
 
             PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -37,7 +37,8 @@ public class DBQuerys {
                         int victorias = resultSet.getInt("victorias");
                         int idEscuderia = resultSet.getInt("idEscuderia");
                         System.out.println(
-                                "Numero de Carrera: " + numeroCarrera + "\n" +
+                                "\n------------------------------------\n" +
+                                " Numero de Carrera: " + numeroCarrera + "\n" +
                                 " Nombre: " + nombre + "\n" +
                                 " Apellido: " + edad + "\n" +
                                 " Nacionalidad: " + nacionalidad + "\n" +
@@ -58,6 +59,7 @@ public class DBQuerys {
                         int campeonatos = resultSet.getInt("campeonatos");
                         String monoplaza = resultSet.getString("monoplaza");
                         System.out.println(
+                                "\n------------------------------------\n" +
                                 " ID Escuderia: " + idEscuderia + "\n" +
                                 " Nombre: " + nombre + "\n" +
                                 " Pais: " + pais + "\n" +
@@ -77,7 +79,8 @@ public class DBQuerys {
                         float longitud = resultSet.getFloat("longitud");
                         int vueltas = resultSet.getInt("vueltas");
                         System.out.println(
-                                "ID Circuito: " + idCircuito + "\n" +
+                                "\n------------------------------------\n" +
+                                " ID Circuito: " + idCircuito + "\n" +
                                 " Nombre: " + nombre + "\n" +
                                 " Pais: " + pais + "\n" +
                                 " Ciudad: " + ciudad + "\n" +
@@ -155,11 +158,41 @@ public class DBQuerys {
 
     }
 
-    public void UPDATE() {
+    public void UPDATE(String tabla, String columna, String condicion, String valor ) {
+        try {
+            String sql = "UPDATE " + tabla + " SET " + columna + "="; // este es generico
+            switch (tabla) {
+                case "PILOTO": // como piloto solo modifica poles y victorias, el valor en ambos es un entero
+                    sql += Integer.parseInt(valor) + " WHERE numeroCarrera=" + Integer.parseInt(condicion) + ";";
+                    break;
+
+                case "ESCUDERIA": // como escuderia modifica campeonatos y monoplaza, el valor en campeonatos es un entero y en monoplaza es un string
+                    if (columna.equals("campeonatos")) {
+                        sql += Integer.parseInt(valor) + " WHERE idEscuderia=" + Integer.parseInt(condicion) + ";";
+                    }
+
+                    if (columna.equals("monoplaza")) {
+                        sql += "'" + valor + "'" + " WHERE idEscuderia=" + Integer.parseInt(condicion) + ";";
+                    }
+                    break;
+            }
+
+            System.out.println(sql);
+
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("An existing record was updated successfully!");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
     public void DELETE() {
 
     }
+
 }
