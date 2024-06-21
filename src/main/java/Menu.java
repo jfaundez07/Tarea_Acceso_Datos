@@ -61,6 +61,7 @@ public class Menu {
     }
 
     public String seleccionarTabla() { // metodo que selecciona la tabla a consultar
+        System.out.println("\n------------------------------------\n");
         System.out.println("Tablas:");
         System.out.println("[1] Piloto");
         System.out.println("[2] Escuderia");
@@ -134,6 +135,7 @@ public class Menu {
     }
 
     public void mostrarOpcionesUPDATE(String tabla) { // Método que muestra las opciones de campos a modificar en una tabla
+        System.out.println("\n------------------------------------\n");
         System.out.println("Posibles campos a modifcar en " + tabla + ":");
         switch (tabla) {
             case "PILOTO":

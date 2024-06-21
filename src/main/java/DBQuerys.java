@@ -149,7 +149,7 @@ public class DBQuerys {
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
-                System.out.println("A new record was inserted successfully!");
+                System.out.println("El nuevo registro se inserto correctamente!");
             }
 
         } catch (SQLException e) {
@@ -182,7 +182,7 @@ public class DBQuerys {
             PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
             int rowsUpdated = preparedStatement.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("An existing record was updated successfully!");
+                System.out.println("El registro fue actualizado correctamente!");
             }
 
         } catch (SQLException e) {
@@ -191,7 +191,34 @@ public class DBQuerys {
 
     }
 
-    public void DELETE() {
+    public void DELETE(String tabla, String valor) {
+        try {
+            String sql = "DELETE FROM " + tabla + " WHERE "; // este es generico
+            switch (tabla) {
+                case "PILOTO": // como piloto solo se puede eliminar por numeroCarrera
+                    sql += "numeroCarrera=" + Integer.parseInt(valor) + ";";
+                    break;
+
+                case "ESCUDERIA": // como escuderia solo se puede eliminar por idEscuderia
+                    sql += "idEscuderia=" + Integer.parseInt(valor) + ";";
+                    break;
+
+                case "CIRCUITO": // como circuito solo se puede eliminar por idCircuito
+                    sql += "idCircuito=" + Integer.parseInt(valor) + ";";
+
+            }
+
+            System.out.println(sql);
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
+            int rowsDeleted = preparedStatement.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                System.out.println("El registro se elimino correctamente!");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
