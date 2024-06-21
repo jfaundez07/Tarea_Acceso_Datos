@@ -16,7 +16,7 @@ public class DBQuerys {
         }
     }
 
-    public void SELECT(String tabla) {
+    public void SELECT(String tabla) { // Este select es para mostrar todos los registros de una tabla
 
         try {
 
@@ -102,6 +102,52 @@ public class DBQuerys {
             e.printStackTrace();
         }
     }
+
+    public void CHOISE(String tabla) { // este es parecido al SELECT pero solo muestra la id y el nombre de los registros para poder actualizar o eliminar
+        try {
+            String sql = "SELECT * FROM " + tabla + ";";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            switch (tabla) {
+                case "PILOTO":
+                    while (resultSet.next()) {
+                        int numeroCarrera = resultSet.getInt("numeroCarrera");
+                        String nombre = resultSet.getString("nombre");
+                        String apellido = resultSet.getString("apellido");
+                        System.out.println("[" + numeroCarrera + "] " + nombre + " " + apellido);
+                    }
+                    break;
+
+                case "ESCUDERIA":
+                    while (resultSet.next()) {
+                        int idEscuderia = resultSet.getInt("idEscuderia");
+                        String nombre = resultSet.getString("nombre");
+                        System.out.println("[" + idEscuderia + "] " + nombre);
+                    }
+                    break;
+
+                case "CIRCUITO":
+                    while (resultSet.next()) {
+                        int idCircuito = resultSet.getInt("idCircuito");
+                        String nombre = resultSet.getString("nombre");
+                        System.out.println("[" + idCircuito + "] " + nombre);
+                    }
+                    break;
+
+                default:
+                    System.out.println("Opción no válida");
+                    break;
+            }
+
+            preparedStatement.close();
+            resultSet.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void INSERT(String tabla, String[] valores) {
         try {

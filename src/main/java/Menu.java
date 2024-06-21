@@ -19,7 +19,7 @@ public class Menu {
                 case "2":
                     System.out.println("Insertar registros");
                     String tabla = seleccionarTabla();
-                    String[] valores = ingresarValoresINSERT(tabla);
+                    String[] valores = ingresarValoresINSERT(tabla, dbQuerys);
                     dbQuerys.INSERT(tabla, valores);
                     break;
                 case "3":
@@ -27,9 +27,11 @@ public class Menu {
                     String tablaUPDATE = seleccionarTabla();
                     if (tablaUPDATE.equals("CIRCUITO")) {
                         System.out.println("No se pueden actualizar registros de la tabla Circuito");
-                        return;
+                        break;
                     }
                     String columna = seleccionarColumna(tablaUPDATE);
+                    System.out.println("Registros actuales:");
+                    dbQuerys.CHOISE(tablaUPDATE);
                     System.out.println("Ingrese el ID del registro a modificar:");
                     String id = scanner.nextLine();
                     System.out.println("Ingrese el nuevo valor:");
@@ -38,6 +40,12 @@ public class Menu {
                     break;
                 case "4":
                     System.out.println("Eliminar registros");
+                    String tablaDELETE = seleccionarTabla();
+                    System.out.println("Ingrese el ID (o numero de carrera) del registro a eliminar");
+                    dbQuerys.CHOISE(tablaDELETE);
+                    System.out.println("ID: ");
+                    String idDELETE = scanner.nextLine();
+                    dbQuerys.DELETE(tablaDELETE, idDELETE);
                     break;
                 default:
                     System.out.println("Opción no válida");
@@ -157,7 +165,7 @@ public class Menu {
         System.out.println("Seleccione una columna:");
     }
 
-    public String[] ingresarValoresINSERT(String tabla) { // Método que ingresa los valores a insertar en una tabla en específico
+    public String[] ingresarValoresINSERT(String tabla, DBQuerys dbQuerys) { // Método que ingresa los valores a insertar en una tabla en específico
         String[] valores = new String[0];
         switch (tabla) {
             case "PILOTO":
@@ -176,7 +184,9 @@ public class Menu {
                 valores[5] = scanner.nextLine();
                 System.out.println("Victorias: ");
                 valores[6] = scanner.nextLine();
-                System.out.println("id de la escuderia: ");
+                System.out.println("Seleccione la id de la escuderia a la que pertenece");
+                dbQuerys.CHOISE("ESCUDERIA");
+                System.out.println("ID: ");
                 valores[7] = scanner.nextLine();
                 break;
 
