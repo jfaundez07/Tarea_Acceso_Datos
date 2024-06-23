@@ -5,20 +5,19 @@ public class DBQuerys {
     Connection connection;
 
     public DBQuerys(){
-
         try {
             this.connection =  DB.connect();
-            System.out.println(connection);
-            System.out.println("Connected to the PostgreSQL database.");
+            System.out.println("Conexion exitosa a la base de datos");
 
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println( "Error de conexion: " + e.getMessage());
         }
     }
 
-    public void SELECT(String tabla) { // Este select es para mostrar todos los registros de una tabla
-
+    public void SELECT(String tabla) { //* Este select es para mostrar todos los registros de una tabla
         try {
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            startTransaction();
 
             String sql = "SELECT * FROM " + tabla + ";";
 
@@ -97,14 +96,20 @@ public class DBQuerys {
 
             preparedStatement.close();
             resultSet.close();
+            commitTransaction();
 
         } catch (SQLException e) {
+            rollbackTransaction();
             e.printStackTrace();
+
         }
     }
 
-    public void CHOISE(String tabla) { // este es parecido al SELECT pero solo muestra la id y el nombre de los registros para poder actualizar o eliminar
+    public void CHOISE(String tabla) { //* este es parecido al SELECT pero solo muestra la id y el nombre de los registros para poder actualizar o eliminar
         try {
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            startTransaction();
+
             String sql = "SELECT * FROM " + tabla + ";";
             PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -142,15 +147,19 @@ public class DBQuerys {
 
             preparedStatement.close();
             resultSet.close();
+            commitTransaction();
 
         } catch (SQLException e) {
+            rollbackTransaction();
             e.printStackTrace();
         }
     }
 
-
     public void INSERT(String tabla, String[] valores) {
         try {
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            startTransaction();
+
             String sql = "";
             PreparedStatement preparedStatement = null;
 
@@ -198,7 +207,11 @@ public class DBQuerys {
                 System.out.println("El nuevo registro se inserto correctamente!");
             }
 
+            commitTransaction();
+            preparedStatement.close();
+
         } catch (SQLException e) {
+            rollbackTransaction();
             e.printStackTrace();
         }
 
@@ -206,6 +219,9 @@ public class DBQuerys {
 
     public void UPDATE(String tabla, String columna, String condicion, String valor ) {
         try {
+            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            startTransaction();
+
             String sql = "UPDATE " + tabla + " SET " + columna + "="; // este es generico
             switch (tabla) {
                 case "PILOTO": // como piloto solo modifica poles y victorias, el valor en ambos es un entero
@@ -231,7 +247,11 @@ public class DBQuerys {
                 System.out.println("El registro fue actualizado correctamente!");
             }
 
+            commitTransaction();
+            preparedStatement.close();
+
         } catch (SQLException e) {
+            rollbackTransaction();
             e.printStackTrace();
         }
 
@@ -239,6 +259,9 @@ public class DBQuerys {
 
     public void DELETE(String tabla, String valor) {
         try {
+            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            startTransaction();
+
             String sql = "DELETE FROM " + tabla + " WHERE "; // este es generico
             switch (tabla) {
                 case "PILOTO": // como piloto solo se puede eliminar por numeroCarrera
@@ -262,10 +285,30 @@ public class DBQuerys {
                 System.out.println("El registro se elimino correctamente!");
             }
 
+            commitTransaction();
+            preparedStatement.close();
+
+        } catch (SQLException e) {
+            rollbackTransaction();
+            e.printStackTrace();
+        }
+    }
+
+    //* Métodos para el manejo de transacciones
+    private void startTransaction() throws SQLException { //* est metodo inicia la transaccion seteando el autocommit a false
+        connection.setAutoCommit(false);
+    }
+
+    private void commitTransaction() throws SQLException { //* este metodo hace commit de la transaccion
+        connection.commit();
+    }
+
+    private void rollbackTransaction() { //* este metodo hace rollback de la transaccion en caso de error
+        try {
+            connection.rollback();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
 }

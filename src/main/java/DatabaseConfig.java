@@ -8,7 +8,7 @@ public class DatabaseConfig {
     static {
         try (InputStream input = DatabaseConfig.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (input == null) {
-                System.out.println("Sorry, unable to find db.properties");
+                System.out.println("No se encontro el archivo en la carpeta resources db.properties");
                 System.exit(1);
             }
 
